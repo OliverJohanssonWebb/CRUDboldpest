@@ -1,0 +1,94 @@
+{
+    "songs": [
+        {
+            "id": 1,
+            "title": "Song 1",
+            "lenght": "2:30"
+        },
+        {
+            "id": 2,
+            "title": "Song 2",
+            "lenght": "3:15"
+        },
+        {
+            "id": 3,
+            "title": "Song 3",
+            "lenght": "4:20"
+        },    
+        {
+            "id": 4,
+            "title": "Song 2",
+            "lenght": "3:15"
+        },
+                {
+            "id": 5,
+            "title": "Song 2",
+            "lenght": "3:15"
+        },
+                {
+            "id": 6,
+            "title": "Song 2",
+            "lenght": "3:15"
+        },
+                {
+            "id": 7,
+            "title": "Song 2",
+            "lenght": "3:15"
+        },
+                {
+            "id": 8,
+            "title": "Song 2",
+            "lenght": "3:15"
+        },
+                {
+            "id": 9,
+            "title": "Song 2",
+            "lenght": "3:15"
+        }       
+    ]
+}
+
+{
+    "artists": [
+        {
+            "id": "Oliver",
+            "name": "Artist 1",
+            "genre": "Genre 1"
+        },
+        {
+            "id": "Viktor",
+            "name": "Artist 2",
+            "genre": "Genre 2"
+        },
+        {
+            "id": "Oskar",
+            "name": "Artist 3",
+            "genre": "Genre 3"
+        },
+        {
+            "id": "Joel",
+            "name": "Artist 4",
+            "genre": "Genre 4"
+        },
+        {
+            "id": "Nisse",
+            "name": "Artist 5",
+            "genre": "Genre 5"
+        },
+        {
+            "id": "Filip",
+            "name": "Artist 6",
+            "genre": "Genre 6"
+        },
+        {
+            "id": "Olle",
+            "name": "Artist 7",
+            "genre": "Genre 7"
+        },
+        {
+            "id": "Jimmy",
+            "name": "Artist 8",
+            "genre": "Genre 8"
+        }
+    ]
+}

@@ -20,7 +20,7 @@
 }
 
 .social-tabs {
-   border: 2px solid pink;
+   border: 2px solid;
    position: fixed;
    top: 0;
    left: 0;
@@ -41,7 +41,7 @@
 }
 
 .information-content {
-   border: 2px solid red;
+   border: 2px solid;
    flex: 1;
     padding: 2rem;
 
