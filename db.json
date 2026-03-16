@@ -2,47 +2,47 @@
     "songs": [
         {
             "id": 1,
-            "title": "Primal Fear",
+            "title": "Silenced by Violence",
             "length": "2:30"
         },
         {
             "id": 2,
-            "title": "Song 2",
+            "title": "Primal Fear",
             "length": "3:15"
         },
         {
             "id": 3,
-            "title": "Song 3",
+            "title": "Holy Terra",
             "length": "4:20"
         },    
         {
             "id": 4,
-            "title": "Song 2",
+            "title": "Messenger",
             "length": "3:15"
         },
                 {
             "id": 5,
-            "title": "Song 2",
+            "title": "The Void",
             "length": "3:15"
         },
                 {
             "id": 6,
-            "title": "Song 2",
+            "title": "Dance of Horrors",
             "length": "3:15"
         },
                 {
             "id": 7,
-            "title": "Song 2",
+            "title": "i avgrundens käftar",
             "length": "3:15"
         },
                 {
             "id": 8,
-            "title": "Song 2",
+            "title": "Anguished Visions",
             "length": "3:15"
         },
                 {
             "id": 9,
-            "title": "Song 2",
+            "title": "Ashen Horizon",
             "length": "3:15"
         }       
     ],
