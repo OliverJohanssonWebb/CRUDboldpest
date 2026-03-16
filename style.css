@@ -1,0 +1,78 @@
+* {
+    background-color: black;
+}
+
+.socials-container {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
+.logo-container {
+    display: flex;
+}
+
+.logo-container img {
+    width: 20rem;
+    height: auto;
+
+
+}
+
+.social-tabs {
+   border: 2px solid pink;
+   position: fixed;
+   top: 0;
+   left: 0;
+   width: 18.5%;
+   display: flex;
+   flex-direction: row;
+   justify-content: space-between;
+  
+   a {
+    margin: 1rem;
+   }
+
+   img {
+    width: 2rem;
+    height: auto;
+    background-color: red;
+   }
+}
+
+.information-content {
+   border: 2px solid red;
+   flex: 1;
+    padding: 2rem;
+
+    h2 {
+        text-align: center;
+        color: red;
+    }
+
+    p {
+        text-align: center;
+        color: red;
+    }
+}
+
+.song-list {
+    border: 2px solid blue;
+    flex: 1;
+    padding: 2rem;
+    margin-top: 2rem;
+
+    h2 {
+        text-align: center;
+        color: blue;
+    }
+
+    p {
+        text-align: center;
+        color: blue;
+    }
+
+    li {
+        color: blue;
+    }
+}
