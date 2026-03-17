@@ -18,35 +18,129 @@ getSongs("1");
 const songList = document.querySelector(".song-list");
 const songContent = document.querySelector("#song-content");
 
-async function getSongs() {
+let songs = [];
+let artists = [];
+
+// Load database ONCE
+async function loadData() {
     const response = await fetch("db.json");
     const data = await response.json();
-    return data.songs;
+
+    songs = data.songs;
+    artists = data.artists;
 }
 
-songList.addEventListener("click", async (event) => {
+loadData();
+
+songList.addEventListener("click", (event) => {
 
     const li = event.target.closest("li");
     if (!li) return;
 
     event.preventDefault();
 
-    const songId = li.id;
+    const songId = Number(li.id);
 
-    const songs = await getSongs();
-
+    // Find song
     const song = songs.find(s => s.id === songId);
-
     if (!song) return;
 
+    // Find artists connected to this song
+    const songArtists = artists.filter(artist =>
+        artist.songs.includes(songId)
+    );
+
+    // Get artist names
+    const artistNames = songArtists.map(a => a.name);
+
+    // Get instruments (and remove duplicates)
+    const instrumentsList = [
+        ...new Set(songArtists.map(a => a.instrument))
+    ];
+
+    // Clear old content
     songContent.replaceChildren();
 
+    // Create elements
     const title = document.createElement("h2");
-    const description = document.createElement("p");
+    const length = document.createElement("p");
+    const instruments = document.createElement("p");
+    const contributors = document.createElement("p");
 
+    // Fill content
     title.textContent = song.title;
-    description.textContent = song.description;
+    length.textContent = "Längd: " + song.length;
+    instruments.textContent = "Instrument: " + instrumentsList.join(", ");
+    contributors.textContent = "Medverkande: " + artistNames.join(", ");
 
-    songContent.append(title, description);
+    // Append
+    songContent.append(title, length, instruments, contributors);
 
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// const songList = document.querySelector(".song-list");
+// const songContent = document.querySelector("#song-content");
+
+// async function getSongs() {
+//     const response = await fetch("db.json");
+//     const data = await response.json();
+//     return data.songs;
+// }
+
+// songList.addEventListener("click", async (event) => {
+
+//     const li = event.target.closest("li");
+//     if (!li) return;
+
+//     event.preventDefault();
+
+//     const songId = li.id;
+
+//     const songs = await getSongs();
+
+//     const song = songs.find(s => s.id === songId);
+
+//     if (!song) return;
+
+//     songContent.replaceChildren();
+
+//     const title = document.createElement("h2");
+//     const description = document.createElement("p");
+
+//     title.textContent = song.title;
+//     description.textContent = song.description;
+
+//     songContent.append(title, description);
+
+// });

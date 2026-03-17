@@ -50,38 +50,46 @@
     "artists": [
         {
             "id": "Oliver",
-            "name": "Artist 1",
-            "songs": [1,2,3,4,5,6,7,8,9]
+            "name": "Oliver",
+            "songs": [1,2,3,4,5,6,7,8,9],
+            "instrument": "Oliver på gitarr"
         },
         {
             "id": "Viktor",
-            "name": "Artist 2",
-            "songs": [3,4,5,6,7,8,9]
+            "name": "Viktor",
+            "songs": [3,4,5,6,7,8,9],
+            "instrument": "Viktor på bas"
         },
         {
             "id": "Oskar",
-            "name": "Artist 3",
-            "songs": [3,4,5,6,7,8,9]
+            "name": "Oskar",
+            "songs": [3,4,5,6,7,8,9],
+            "instrument": "Oskar på trummor"
         },
         {
             "id": "Joel",
-            "name": "Artist 4",
-            "songs": [1,2,3]
+            "name": "Joel",
+            "songs": [1,2,3],
+            "instrument": "Joel på gitarr samt trummor"
+
         },
         {
             "id": "Nisse",
-            "name": "Artist 5",
-            "songs": [3,4]
+            "name": "Nisse",
+            "songs": [3,4],
+            "instrument": "Nisse på trummor"
         },
         {
             "id": "Filip",
-            "name": "Artist 6",
-            "songs": [1,3]
+            "name": "Filip",
+            "songs": [1,3],
+            "instrument": "Filip på trummor"
         },
         {
             "id": "Jimmy",
-            "name": "Artist 7",
-            "songs": [3] 
+            "name": "Jimmy",
+            "songs": [3],
+            "instrument": "Jimmy på trummor"
         }
     ]
 }
