@@ -111,4 +111,22 @@
     height: auto;
     padding: 1rem;
     margin-top: 2rem;
+    color: red;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.update-song, .delete-song {
+    padding: 0.5rem 1rem;
+    background-color: rgba(245, 0, 0, 0.507);
+    border: none;
+    border-radius: 5px;
+    color: black;
+    cursor: pointer;
+    color: red;
 }

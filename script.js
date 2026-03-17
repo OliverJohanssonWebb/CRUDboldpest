@@ -16,21 +16,26 @@ getSongs("1");
 
 
 const songList = document.querySelector(".song-list");
-const songContent = document.querySelector("#song-content");
+const songInfo = document.querySelector(".song-info");
+const updateSongBtn = document.querySelector(".update-song");
+const deleteSongBtn = document.querySelector(".delete-song");
 
 let songs = [];
 let artists = [];
 
-// Load database ONCE
-async function loadData() {
-    const response = await fetch("db.json");
-    const data = await response.json();
 
-    songs = data.songs;
-    artists = data.artists;
+async function loadData() {
+    const [songsRes, artistsRes] = await Promise.all([
+        fetch("http://localhost:3000/songs"),
+        fetch("http://localhost:3000/artists")
+    ]);
+
+    songs = await songsRes.json();
+    artists = await artistsRes.json();
 }
 
 loadData();
+
 
 songList.addEventListener("click", (event) => {
 
@@ -39,56 +44,195 @@ songList.addEventListener("click", (event) => {
 
     event.preventDefault();
 
-    const songId = Number(li.id);
+    const songId = li.id; 
 
-    // Find song
-    const song = songs.find(s => s.id === songId);
+
+    document.querySelectorAll(".song-list li").forEach(el => {
+        el.classList.remove("active");
+    });
+    li.classList.add("active");
+
+    const song = songs.find(s => s.id == songId); 
     if (!song) return;
 
-    // Find artists connected to this song
-    const songArtists = artists.filter(artist =>
-        artist.songs.includes(songId)
+    const songArtists = artists.filter(a =>
+        a.songs.map(String).includes(songId) 
     );
 
-    // Get artist names
     const artistNames = songArtists.map(a => a.name);
 
-    // Get instruments (and remove duplicates)
     const instrumentsList = [
         ...new Set(songArtists.map(a => a.instrument))
     ];
 
-    // Clear old content
-    songContent.replaceChildren();
+    songInfo.replaceChildren();
 
-    // Create elements
     const title = document.createElement("h2");
     const length = document.createElement("p");
     const instruments = document.createElement("p");
     const contributors = document.createElement("p");
 
-    // Fill content
     title.textContent = song.title;
     length.textContent = "Längd: " + song.length;
     instruments.textContent = "Instrument: " + instrumentsList.join(", ");
     contributors.textContent = "Medverkande: " + artistNames.join(", ");
 
-    // Append
-    songContent.append(title, length, instruments, contributors);
+    songInfo.append(title, length, instruments, contributors);
+});
 
+// Add/update
+updateSongBtn.addEventListener("click", async () => {
+
+    const title = prompt("Song title:");
+    const length = prompt("Song length:");
+
+    if (!title || !length) return;
+
+
+    const songRes = await fetch("http://localhost:3000/songs", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            title,
+            length
+        })
+    });
+
+    const newSong = await songRes.json();
+    const newSongId = String(newSong.id); 
+
+    await loadData();
+
+    const artistName = prompt("Artist name(ex: Oliver, Joel, Viktor):");
+    const instrument = prompt("Instrument(ex: guitar, bass, drums):");
+
+    if (!artistName || !instrument) return;
+
+    let artist = artists.find(a => a.name === artistName);
+
+    if (artist) {
+        const updatedSongs = [...artist.songs.map(String), newSongId];
+
+        const res = await fetch(`http://localhost:3000/artists/${artist.id}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                songs: updatedSongs
+            })
+        });
+
+        artist = await res.json();
+
+    } else {
+        const res = await fetch("http://localhost:3000/artists", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                name: artistName,
+                songs: [newSongId],
+                instrument: instrument
+            })
+        });
+
+        artist = await res.json();
+        artists.push(artist);
+    }
+
+    const li = document.createElement("li");
+    li.id = newSongId;
+
+    const link = document.createElement("a");
+    link.href = "#";
+    link.textContent = title;
+
+    li.appendChild(link);
+    songList.appendChild(li);
+
+    console.log("Saved:", newSong, artist);
 });
 
 
+//delete
+deleteSongBtn.addEventListener("click", async () => {
 
+    const selectedLi = document.querySelector(".song-list li.active");
 
+    if (!selectedLi) {
+        alert("Select a song first!");
+        return;
+    }
 
+    const songId = selectedLi.id;
 
+    await fetch(`http://localhost:3000/songs/${songId}`, {
+        method: "DELETE"
+    });
 
+    const affectedArtists = artists.filter(a =>
+        a.songs.map(String).includes(songId)
+    );
 
+    for (let artist of affectedArtists) {
 
+        const updatedSongs = artist.songs
+            .map(String)
+            .filter(id => id !== songId);
 
+        await fetch(`http://localhost:3000/artists/${artist.id}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                songs: updatedSongs
+            })
+        });
 
+        artist.songs = updatedSongs;
+    }
 
+    songs = songs.filter(s => String(s.id) !== songId);
+
+    selectedLi.remove();
+
+    songContent.replaceChildren();
+
+    console.log("Deleted song:", songId);
+});
+
+function renderSongList() {
+    songList.replaceChildren();
+
+    songs.forEach(song => {
+        const li = document.createElement("li");
+        li.id = song.id;
+
+        const link = document.createElement("a");
+        link.href = "#";
+        link.textContent = song.title;
+
+        li.appendChild(link);
+        songList.appendChild(li);
+    });
+}
+
+async function loadData() {
+    const [songsRes, artistsRes] = await Promise.all([
+        fetch("http://localhost:3000/songs"),
+        fetch("http://localhost:3000/artists")
+    ]);
+
+    songs = await songsRes.json();
+    artists = await artistsRes.json();
+
+    renderSongList();
+}
 
 
 
