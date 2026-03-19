@@ -2,6 +2,16 @@
     background-color: black;
 }
 
+.metal-mania-regular {
+  font-family: "Metal Mania", system-ui;
+  font-weight: 400;
+  font-style: normal;
+}
+
+body {
+  font-family: "Metal Mania", system-ui;
+}
+
 ul {
     list-style: none;
     padding: 0;
@@ -48,7 +58,7 @@ ul {
     padding: 2rem;
 }
 
-.information-content h2 {
+.information-content h1, h2 {
     text-align: center;
     color: red;
 }
@@ -56,10 +66,12 @@ ul {
 .information-content p {
     text-align: center;
     color: red;
+    text-shadow: 1px 1px 2px rgba(247, 3, 3, 0.274);
+    font-size: 18px;
 }
 
 .song-list-container {
-    border: 2px solid rgb(157, 255, 0);
+    border: 2px solid rgb(255, 0, 0);
     flex: 1;
     margin-top: 2rem;
     align-items: center;
@@ -74,7 +86,7 @@ ul {
 
 .song-list-container p {
     text-align: center;
-    color: blue;
+    color: rgb(255, 0, 0);
 }
 
 .song-list-container ul {
@@ -92,6 +104,7 @@ ul {
     border-radius: 10px;
     margin: 10px;
     background-color: rgba(252, 1, 1, 0.342);
+    
 }
 
 .song-list-container li a {
@@ -108,7 +121,7 @@ ul {
 }
 
 #song-content {
-    border: 1px solid rgb(0, 0, 255); 
+    border: 1px solid rgb(255, 0, 0); 
     width: 90%;
     height: auto;
     padding: 1rem;
@@ -168,11 +181,8 @@ ul {
 
 }
 
-.artist-list {
-    border: red solid 1px;
-    margin-top: 1rem;
-    ;
-    
+.artist-list {  
+    margin-top: 1rem;  
 }
 
 .artist-list-container {
