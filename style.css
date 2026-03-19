@@ -1,7 +1,11 @@
-/* * {
+* {
     background-color: black;
-} */
+}
 
+ul {
+    list-style: none;
+    padding: 0;
+}
 .socials-container {
     display: flex;
     flex-direction: row;
@@ -54,24 +58,18 @@
     color: red;
 }
 
-
-.songs-layout {
-    display: flex;
-    flex-direction: row;
-    gap: 2rem;
-    align-items: flex-start;
-}
-
 .song-list-container {
     border: 2px solid rgb(157, 255, 0);
     flex: 1;
-    padding: 2rem;
     margin-top: 2rem;
+    align-items: center;
+    width: 100%;
 }
 
 .song-list-container h2 {
     text-align: center;
-    color: blue;
+    color: rgb(255, 0, 0);
+    padding-bottom: 1rem;
 }
 
 .song-list-container p {
@@ -84,16 +82,20 @@
     padding: 0;
 }
 
+.song-list-container a {
+    text-decoration: none;
+    background-color: rgba(255, 0, 0, 0);
+}
+
 .song-list-container li {
     border: 1px solid rgb(248, 0, 0);
     border-radius: 10px;
     margin: 10px;
-    background-color: rgba(252, 1, 1, 0.514);
+    background-color: rgba(252, 1, 1, 0.342);
 }
 
 .song-list-container li a {
     display: block;
-    width: 100%;
     padding: 10px;
     text-align: center;
     color: rgb(207, 15, 15);
@@ -107,7 +109,7 @@
 
 #song-content {
     border: 1px solid rgb(0, 0, 255); 
-    width: 40%;
+    width: 90%;
     height: auto;
     padding: 1rem;
     margin-top: 2rem;
@@ -117,11 +119,12 @@
 .buttons {
     display: flex;
     flex-direction: row;
+    justify-content: center;
     gap: 1rem;
     margin-top: 1rem;
 }
 
-.update-song, .delete-song {
+.update-song, .delete-song, .delete-artist, .edit-song, .edit-artist {
     padding: 0.5rem 1rem;
     background-color: rgba(245, 0, 0, 0.507);
     border: none;
@@ -129,4 +132,79 @@
     color: black;
     cursor: pointer;
     color: red;
+}
+.artist-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.main-layout {
+    display:flex;
+    gap: 20px;
+}
+
+.right-side {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    width: 66%;
+}
+
+.songs-layout {
+    width: 33%;
+}
+
+.song-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.artist-layout {
+    display: flex;
+    flex-direction: column;
+    border: red solid 1px;
+    margin-top: 2rem;
+    width: 100%;
+
+}
+
+.artist-list {
+    border: red solid 1px;
+    margin-top: 1rem;
+    ;
+    
+}
+
+.artist-list-container {
+    width: 100%;
+}
+
+
+.artist-list-container h2 {
+    justify-content: center;
+    text-align: center;
+    color: red;
+}
+
+.artist-list a {
+    border: 1px solid rgb(248, 0, 0);
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+    background-color: rgba(252, 1, 1, 0.151);
+    color: rgb(207, 15, 15);
+    text-decoration: none;
+    height: 2.3rem;
+}
+
+.artist-list-container li a:hover {
+    background-color: rgb(255, 30, 0);
+    color: rgb(128, 64, 64);
+}
+
+.buttons :hover {
+    background-color: rgb(255, 30, 0);
+    color: rgb(128, 64, 64);
 }
