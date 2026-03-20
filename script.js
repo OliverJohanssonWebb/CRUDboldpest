@@ -156,7 +156,7 @@ artistList.addEventListener("click", (event) => {
 updateSongBtn.addEventListener("click", async () => {
     try {
         const title = prompt("Ange låttitel:");
-        const length = prompt("Ange längd:");
+        const length = prompt("Ange längd(ex: 3:45):");
         const recorded = prompt("Är låten inspelad (Ja/Nej):");
 
         if (!title || !length || !recorded) return;
