@@ -41,7 +41,7 @@ async function loadData() {
         ]);
 
         if (!songsRes.ok || !artistsRes.ok) {
-            throw new Error("Kunde inte ladda data");
+            throw new Error("Kunde inte hämta /songs eller /artists");
         }
 
         songs = await songsRes.json();
@@ -52,7 +52,7 @@ async function loadData() {
 
     } catch (error) {
         console.error("loadData error:", error.message);
-        alert("Kunde inte ladda data.");
+        alert("Kunde inte hämta /songs eller /artists");
     }
 }
 
@@ -141,7 +141,7 @@ songList.addEventListener("click", (event) => {
         songInfo.append(title, length, instruments, contributors, recorded);
 
     } catch (error) {
-        console.error("Song click error:", error.message);
+        console.error("Kunde inte visa. Saknas information om låt/artist:", error.message);
     }
 });
 
@@ -184,16 +184,16 @@ artistList.addEventListener("click", (event) => {
         songInfo.append(title, list);
 
     } catch (error) {
-        console.error("Artist click error:", error.message);
+        console.error("Kunde inte visa.", error.message);
     }
 });
 
 
 updateSongBtn.addEventListener("click", async () => {
     try {
-        const title = prompt("Song title:");
-        const length = prompt("Song length:");
-        const recorded = prompt("Recorded (Yes/No):");
+        const title = prompt("Song titel:");
+        const length = prompt("Song längd(ex 3:45):");
+        const recorded = prompt("Inspelad(Ja/Nej):");
 
         if (!title || !length || !recorded) return;
 
@@ -210,8 +210,8 @@ updateSongBtn.addEventListener("click", async () => {
 
         await loadData();
 
-        const artistName = prompt("Artist name:");
-        const instrument = prompt("Instrument:");
+        const artistName = prompt("Artist namn(ex:Oliver, Joel, Viktor):");
+        const instrument = prompt("Instrument:(ex:Gitarr, Trummor, bas):");
 
         if (!artistName || !instrument) return;
 
@@ -260,7 +260,7 @@ editSongBtn.addEventListener("click", async () => {
 
         const newTitle = prompt("Ny titel:", song.title);
         const newLength = prompt("Ny längd:", song.length);
-        const newRecorded = prompt("Inspelad (Yes/No):", song.recorded);
+        const newRecorded = prompt("Inspelad (Ja/Nej):", song.recorded);
 
         if (!newTitle || !newLength || !newRecorded) return;
 
@@ -319,7 +319,7 @@ editArtistBtn.addEventListener("click", async () => {
 deleteSongBtn.addEventListener("click", async () => {
     try {
         if (!selectedSongId) {
-            alert("Select a song first!");
+            alert("Välj en låt först!");
             return;
         }
 
@@ -350,7 +350,7 @@ deleteSongBtn.addEventListener("click", async () => {
 
     } catch (error) {
         console.error("Delete error:", error.message);
-        alert("Failed to delete song.");
+        alert("Kunde inte ta bort låt.");
     }
 });
 
