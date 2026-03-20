@@ -59,6 +59,7 @@
     {
       "id": "Oliver",
       "name": "Oliver",
+      "instrument": "Oliver på gitarr",
       "songs": [
         "1",
         "2",
@@ -69,74 +70,73 @@
         "7",
         "8",
         "9"
-      ],
-      "instrument": "Oliver på gitarr"
+      ]
     },
     {
       "id": "Viktor",
       "name": "Viktor",
+      "instrument": "Viktor på bas samt sång",
       "songs": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9
-      ],
-      "instrument": "Viktor på bas samt sång"
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9"
+      ]
     },
     {
       "id": "Oskar",
       "name": "Oskar",
+      "instrument": "Oskar på trummor",
       "songs": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9
-      ],
-      "instrument": "Oskar på trummor"
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9"
+      ]
     },
     {
       "id": "Joel",
       "name": "Joel",
+      "instrument": "Joel på gitarr samt trummor",
       "songs": [
         "2",
         "3"
-      ],
-      "instrument": "Joel på gitarr samt trummor"
+      ]
     },
     {
       "id": "Nisse",
       "name": "Nisse",
+      "instrument": "Nisse på trummor",
       "songs": [
-        3,
-        4
-      ],
-      "instrument": "Nisse på trummor"
+        "3",
+        "4"
+      ]
     },
     {
       "id": "Filip",
       "name": "Filip",
+      "instrument": "Filip på trummor",
       "songs": [
         "3"
-      ],
-      "instrument": "Filip på trummor"
+      ]
     },
     {
       "id": "Jimmy",
       "name": "Jimmy",
+      "instrument": "Jimmy på trummor",
       "songs": [
-        3
-      ],
-      "instrument": "Jimmy på trummor"
+        "3"
+      ]
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

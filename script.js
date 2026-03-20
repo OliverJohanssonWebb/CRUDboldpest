@@ -15,7 +15,6 @@
 
 // getSongs("1");
 ////////////////////////////////////////////TEST/////////////////////////////////////////////////////
-
 const songList = document.querySelector(".song-list");
 const artistList = document.querySelector(".artist-list");
 const songInfo = document.querySelector(".song-info");
@@ -32,7 +31,6 @@ let artists = [];
 let selectedSongId = null;
 let selectedArtistId = null;
 
-
 async function loadData() {
     try {
         const [songsRes, artistsRes] = await Promise.all([
@@ -40,9 +38,7 @@ async function loadData() {
             fetch("http://localhost:3000/artists")
         ]);
 
-        if (!songsRes.ok || !artistsRes.ok) {
-            throw new Error("Kunde inte hämta /songs eller /artists");
-        }
+        if (!songsRes.ok || !artistsRes.ok) throw new Error();
 
         songs = await songsRes.json();
         artists = await artistsRes.json();
@@ -50,12 +46,10 @@ async function loadData() {
         renderSongList();
         renderArtistList();
 
-    } catch (error) {
-        console.error("loadData error:", error.message);
-        alert("Kunde inte hämta /songs eller /artists");
+    } catch {
+        alert("Kunde inte hämta data från servern.");
     }
 }
-
 
 function renderSongList() {
     songList.replaceChildren();
@@ -64,9 +58,7 @@ function renderSongList() {
         const li = document.createElement("li");
         li.id = song.id;
 
-        if (song.id === selectedSongId) {
-            li.classList.add("active");
-        }
+        if (song.id === selectedSongId) li.classList.add("active");
 
         const link = document.createElement("a");
         link.href = "#";
@@ -77,7 +69,6 @@ function renderSongList() {
     });
 }
 
-
 function renderArtistList() {
     artistList.replaceChildren();
 
@@ -85,9 +76,7 @@ function renderArtistList() {
         const li = document.createElement("li");
         li.id = artist.id;
 
-        if (artist.id === selectedArtistId) {
-            li.classList.add("active");
-        }
+        if (artist.id === selectedArtistId) li.classList.add("active");
 
         const link = document.createElement("a");
         link.href = "#";
@@ -98,165 +87,164 @@ function renderArtistList() {
     });
 }
 
-
 songList.addEventListener("click", (event) => {
-    try {
-        const li = event.target.closest("li");
-        if (!li) return;
+    const li = event.target.closest("li");
+    if (!li) return;
 
-        event.preventDefault();
+    event.preventDefault();
 
-        const songId = li.id;
-        selectedSongId = songId;
+    selectedSongId = li.id;
 
-        document.querySelectorAll(".song-list li").forEach(el => {
-            el.classList.remove("active");
-        });
-        li.classList.add("active");
+    document.querySelectorAll(".song-list li").forEach(el => el.classList.remove("active"));
+    li.classList.add("active");
 
-        const song = songs.find(s => String(s.id) === String(songId));
-        if (!song) return;
+    const song = songs.find(s => String(s.id) === String(selectedSongId));
+    if (!song) return;
 
-        const songArtists = artists.filter(a =>
-            a.songs.map(String).includes(String(songId))
-        );
+    const songArtists = artists.filter(a =>
+        (Array.isArray(a.songs) ? a.songs : []).map(String).includes(String(selectedSongId))
+    );
 
-        const artistNames = songArtists.map(a => a.name);
-        const instrumentsList = [...new Set(songArtists.map(a => a.instrument))];
+    const artistNames = songArtists.map(a => a.name);
+    const instruments = [...new Set(songArtists.map(a => a.instrument))];
 
-        songInfo.replaceChildren();
+    songInfo.replaceChildren();
 
-        const title = document.createElement("h2");
-        const length = document.createElement("p");
-        const instruments = document.createElement("p");
-        const contributors = document.createElement("p");
-        const recorded = document.createElement("p");
-
-        title.textContent = song.title;
-        length.textContent = "Längd: " + song.length;
-        instruments.textContent = "Instrument: " + instrumentsList.join(", ");
-        contributors.textContent = "Medverkande: " + artistNames.join(", ");
-        recorded.textContent = "Inspelad: " + song.recorded;
-
-        songInfo.append(title, length, instruments, contributors, recorded);
-
-    } catch (error) {
-        console.error("Kunde inte visa. Saknas information om låt/artist:", error.message);
-    }
+    songInfo.append(
+        Object.assign(document.createElement("h2"), { textContent: song.title }),
+        Object.assign(document.createElement("p"), { textContent: "Längd: " + song.length }),
+        Object.assign(document.createElement("p"), { textContent: "Instrument: " + instruments.join(", ") }),
+        Object.assign(document.createElement("p"), { textContent: "Medverkande: " + artistNames.join(", ") }),
+        Object.assign(document.createElement("p"), { textContent: "Inspelad: " + song.recorded })
+    );
 });
-
 
 artistList.addEventListener("click", (event) => {
-    try {
-        const li = event.target.closest("li");
-        if (!li) return;
+    const li = event.target.closest("li");
+    if (!li) return;
 
-        event.preventDefault();
+    event.preventDefault();
 
-        document.querySelectorAll(".artist-list li").forEach(el => {
-            el.classList.remove("active");
-        });
-        li.classList.add("active");
+    selectedArtistId = li.id;
 
-        const artistId = li.id;
-        selectedArtistId = artistId;
+    document.querySelectorAll(".artist-list li").forEach(el => el.classList.remove("active"));
+    li.classList.add("active");
 
-        const artist = artists.find(a => String(a.id) === String(artistId));
-        if (!artist) return;
+    const artist = artists.find(a => String(a.id) === String(selectedArtistId));
+    if (!artist) return;
 
-        const artistSongs = songs.filter(song =>
-            artist.songs.map(String).includes(String(song.id))
-        );
+    const artistSongs = songs.filter(song =>
+        (Array.isArray(artist.songs) ? artist.songs : []).map(String).includes(String(song.id))
+    );
 
-        songInfo.replaceChildren();
+    songInfo.replaceChildren();
 
-        const title = document.createElement("h2");
-        title.textContent = artist.name;
+    const title = document.createElement("h2");
+    title.textContent = artist.name;
 
-        const list = document.createElement("ul");
+    const list = document.createElement("ul");
 
-        artistSongs.forEach(song => {
-            const li = document.createElement("li");
-            li.textContent = `${song.title} (${song.length})`;
-            list.appendChild(li);
-        });
+    artistSongs.forEach(song => {
+        const li = document.createElement("li");
+        li.textContent = `${song.title} (${song.length})`;
+        list.appendChild(li);
+    });
 
-        songInfo.append(title, list);
-
-    } catch (error) {
-        console.error("Kunde inte visa.", error.message);
-    }
+    songInfo.append(title, list);
 });
-
 
 updateSongBtn.addEventListener("click", async () => {
     try {
-        const title = prompt("Song titel:");
-        const length = prompt("Song längd(ex 3:45):");
-        const recorded = prompt("Inspelad(Ja/Nej):");
+        const title = prompt("Ange låttitel:");
+        const length = prompt("Ange längd:");
+        const recorded = prompt("Är låten inspelad (Ja/Nej):");
 
         if (!title || !length || !recorded) return;
 
-        const songRes = await fetch("http://localhost:3000/songs", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ title, length, recorded })
+        const container = document.createElement("div");
+        container.classList.add("artist-select-container");
+
+        const select = document.createElement("select");
+        select.multiple = true;
+        select.size = 6;
+
+        artists.forEach(artist => {
+            const option = document.createElement("option");
+            option.value = artist.id;
+            option.textContent = artist.name;
+            select.appendChild(option);
         });
 
-        if (!songRes.ok) throw new Error("Kunde inte skapa låt");
+        const button = document.createElement("button");
+        button.textContent = "Lägg till";
 
-        const newSong = await songRes.json();
-        const newSongId = String(newSong.id);
+        const text = document.createElement("p");
+        text.textContent = "Välj flera artister genom att hålla inne Ctrl och klicka på dem:";
 
-        await loadData();
+        container.appendChild(text);
+        container.appendChild(select);
+        container.appendChild(button);
 
-        const artistName = prompt("Artist namn(ex:Oliver, Joel, Viktor):");
-        const instrument = prompt("Instrument:(ex:Gitarr, Trummor, bas):");
+        document.body.appendChild(container);
 
-        if (!artistName || !instrument) return;
+        button.onclick = async () => {
+            try {
+                const selectedArtistIds = Array.from(select.selectedOptions).map(opt => opt.value);
 
-        let artist = artists.find(a => a.name === artistName);
+                if (selectedArtistIds.length === 0) {
+                    alert("Välj minst en artist.");
+                    return;
+                }
 
-        if (artist) {
-            const updatedSongs = [...artist.songs.map(String), newSongId];
+                const songRes = await fetch("http://localhost:3000/songs", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ title, length, recorded })
+                });
 
-            await fetch(`http://localhost:3000/artists/${artist.id}`, {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ songs: updatedSongs })
-            });
+                if (!songRes.ok) throw new Error();
 
-        } else {
-            await fetch("http://localhost:3000/artists", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    id: artistName,
-                    name: artistName,
-                    songs: [newSongId],
-                    instrument
-                })
-            });
-        }
+                const newSong = await songRes.json();
+                const newSongId = String(newSong.id);
 
-        await loadData();
+                for (let artistId of selectedArtistIds) {
+                    const artist = artists.find(a => String(a.id) === String(artistId));
+                    if (!artist) continue;
 
-    } catch (error) {
-        console.error("Update error:", error.message);
-        alert("Något gick fel!");
+                    const currentSongs = Array.isArray(artist.songs) ? artist.songs : [];
+                    const updatedSongs = [...currentSongs.map(String), newSongId];
+
+                    await fetch(`http://localhost:3000/artists/${artist.id}`, {
+                        method: "PUT",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            id: artist.id,
+                            name: artist.name,
+                            instrument: artist.instrument,
+                            songs: updatedSongs
+                        })
+                    });
+                }
+
+                document.body.removeChild(container);
+
+                await loadData();
+
+            } catch {
+                alert("Kunde inte koppla låten till artister.");
+            }
+        };
+
+    } catch {
+        alert("Kunde inte lägga till låten.");
     }
 });
 
-
 editSongBtn.addEventListener("click", async () => {
     try {
-        if (!selectedSongId) {
-            alert("Välj en låt först!");
-            return;
-        }
+        if (!selectedSongId) return alert("Välj en låt först.");
 
         const song = songs.find(s => String(s.id) === String(selectedSongId));
-        if (!song) return;
 
         const newTitle = prompt("Ny titel:", song.title);
         const newLength = prompt("Ny längd:", song.length);
@@ -264,82 +252,80 @@ editSongBtn.addEventListener("click", async () => {
 
         if (!newTitle || !newLength || !newRecorded) return;
 
-        await fetch(`http://localhost:3000/songs/${selectedSongId}`, {
+        const res = await fetch(`http://localhost:3000/songs/${selectedSongId}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
+                id: song.id,
                 title: newTitle,
                 length: newLength,
                 recorded: newRecorded
             })
         });
 
+        if (!res.ok) throw new Error();
+
         await loadData();
 
-    } catch (error) {
-        console.error("Edit song error:", error.message);
-        alert("Kunde inte uppdatera låt.");
+    } catch {
+        alert("Kunde inte uppdatera låten.");
     }
 });
 
-
 editArtistBtn.addEventListener("click", async () => {
     try {
-        if (!selectedArtistId) {
-            alert("Välj en artist först!");
-            return;
-        }
+        if (!selectedArtistId) return alert("Välj en artist först.");
 
-        const artist = artists.find(a => String(a.id) === String(selectedArtistId));
-        if (!artist) return;
+        const artist = artists.find(a => a.id === selectedArtistId);
 
         const newName = prompt("Nytt namn:", artist.name);
         const newInstrument = prompt("Nytt instrument:", artist.instrument);
 
         if (!newName || !newInstrument) return;
 
-        await fetch(`http://localhost:3000/artists/${selectedArtistId}`, {
+        const res = await fetch(`http://localhost:3000/artists/${selectedArtistId}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
+                id: artist.id,
                 name: newName,
-                instrument: newInstrument
+                instrument: newInstrument,
+                songs: Array.isArray(artist.songs) ? artist.songs : []
             })
         });
 
+        if (!res.ok) throw new Error();
+
         await loadData();
 
-    } catch (error) {
-        console.error("Edit artist error:", error.message);
-        alert("Kunde inte uppdatera artist.");
+    } catch {
+        alert("Kunde inte uppdatera artisten.");
     }
 });
 
-
 deleteSongBtn.addEventListener("click", async () => {
     try {
-        if (!selectedSongId) {
-            alert("Välj en låt först!");
-            return;
-        }
+        if (!selectedSongId) return alert("Välj en låt först.");
 
-        await fetch(`http://localhost:3000/songs/${selectedSongId}`, {
+        const res = await fetch(`http://localhost:3000/songs/${selectedSongId}`, {
             method: "DELETE"
         });
 
-        const affectedArtists = artists.filter(a =>
-            a.songs.map(String).includes(String(selectedSongId))
-        );
+        if (!res.ok) throw new Error();
 
-        for (let artist of affectedArtists) {
-            const updatedSongs = artist.songs
-                .map(String)
-                .filter(id => id !== String(selectedSongId));
+        for (let artist of artists) {
+            const currentSongs = Array.isArray(artist.songs) ? artist.songs : [];
+            const updatedSongs = currentSongs.map(String).filter(id => id !== selectedSongId);
 
             await fetch(`http://localhost:3000/artists/${artist.id}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ songs: updatedSongs })
+                body: JSON.stringify({
+                    id: artist.id,
+                    name: artist.name,
+                    instrument: artist.instrument,
+                    songs: updatedSongs
+                })
             });
         }
 
@@ -348,92 +334,29 @@ deleteSongBtn.addEventListener("click", async () => {
         await loadData();
         songInfo.replaceChildren();
 
-    } catch (error) {
-        console.error("Delete error:", error.message);
-        alert("Kunde inte ta bort låt.");
+    } catch {
+        alert("Kunde inte ta bort låten.");
     }
 });
 
-
 deleteArtistBtn.addEventListener("click", async () => {
     try {
-        if (!selectedArtistId) {
-            alert("Välj en artist först!");
-            return;
-        }
+        if (!selectedArtistId) return alert("Välj en artist först.");
 
-        if (!confirm("Är du säker?")) return;
-
-        await fetch(`http://localhost:3000/artists/${selectedArtistId}`, {
+        const res = await fetch(`http://localhost:3000/artists/${selectedArtistId}`, {
             method: "DELETE"
         });
+
+        if (!res.ok) throw new Error();
 
         selectedArtistId = null;
 
         await loadData();
         songInfo.replaceChildren();
 
-    } catch (error) {
-        console.error("Delete artist error:", error.message);
-        alert("Kunde inte ta bort artist.");
+    } catch {
+        alert("Kunde inte ta bort artisten.");
     }
 });
 
-
-async function init() {
-    await loadData();
-}
-
-init();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// const songList = document.querySelector(".song-list");
-// const songContent = document.querySelector("#song-content");
-
-// async function getSongs() {
-//     const response = await fetch("db.json");
-//     const data = await response.json();
-//     return data.songs;
-// }
-
-// songList.addEventListener("click", async (event) => {
-
-//     const li = event.target.closest("li");
-//     if (!li) return;
-
-//     event.preventDefault();
-
-//     const songId = li.id;
-
-//     const songs = await getSongs();
-
-//     const song = songs.find(s => s.id === songId);
-
-//     if (!song) return;
-
-//     songContent.replaceChildren();
-
-//     const title = document.createElement("h2");
-//     const description = document.createElement("p");
-
-//     title.textContent = song.title;
-//     description.textContent = song.description;
-
-//     songContent.append(title, description);
-
-// });
+loadData();

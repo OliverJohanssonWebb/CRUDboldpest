@@ -218,3 +218,45 @@ ul {
     background-color: rgb(255, 30, 0);
     color: rgb(128, 64, 64);
 }
+
+
+
+select, button {
+
+    background-color: rgb(255, 2, 2);
+    padding: 0.5rem 1rem;
+    background-color: rgba(8, 2, 2, 0.507);
+    border: none;
+    border-radius: 5px;
+    color: black;
+    cursor: pointer;
+    color: rgb(255, 6, 6);
+    font-family: "Metal Mania", cursive;
+} 
+
+.artist-select-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #0a0000;
+    padding: 20px;
+    border: 2px solid red;
+    border-radius: 10px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    color: red;
+}
+
+option {
+    background-color: black;
+    color: rgb(253, 0, 0);
+    height: 20px;
+    font-size: 20px;
+
+}
+
+
