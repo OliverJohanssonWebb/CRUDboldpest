@@ -15,6 +15,18 @@ let artists = [];
 let selectedSongId = null;
 let selectedArtistId = null;
 
+function clearElement(el) {
+    while (el.firstChild) {
+        el.removeChild(el.firstChild);
+    }
+}
+
+function createParagraph(text) {
+    const p = document.createElement("p");
+    p.textContent = text;
+    return p;
+}
+
 async function getSongById(id) {
     try {
         const res = await fetch(`http://localhost:3000/songs/${id}`);
@@ -59,7 +71,7 @@ async function loadData() {
 }
 
 function renderSongList(songArray) {
-    songList.innerHTML = "";
+    clearElement(songList);
 
     songArray.forEach(song => {
         const li = document.createElement("li");
@@ -75,7 +87,7 @@ function renderSongList(songArray) {
 }
 
 function renderArtistList(artistArray) {
-    artistList.innerHTML = "";
+    clearElement(artistList);
 
     artistArray.forEach(artist => {
         const li = document.createElement("li");
@@ -107,13 +119,16 @@ songList.addEventListener("click", async (event) => {
 
     const artistNames = songArtists.map(a => a.name);
 
-    songInfo.innerHTML = `
-        <h2>${song.title}</h2>
-        <p>Längd: ${song.length}</p>
-        <p>Medverkande: ${artistNames.join(", ")}</p>
-        <p>Inspelad: ${song.recorded}</p>
-    `
-    ;
+    clearElement(songInfo);
+
+    const title = document.createElement("h2");
+    title.textContent = song.title;
+
+    const length = createParagraph(`Längd: ${song.length}`);
+    const artistsEl = createParagraph(`Medverkande: ${artistNames.join(", ")}`);
+    const recorded = createParagraph(`Inspelad: ${song.recorded}`);
+
+    songInfo.append(title, length, artistsEl, recorded);
 });
 
 artistList.addEventListener("click", async (event) => {
@@ -131,7 +146,7 @@ artistList.addEventListener("click", async (event) => {
         (artist.songs || []).map(String).includes(String(song.id))
     );
 
-    songInfo.innerHTML = "";
+    clearElement(songInfo);
 
     const title = document.createElement("h2");
     title.textContent = artist.name;
@@ -143,16 +158,17 @@ artistList.addEventListener("click", async (event) => {
         li.textContent = `${song.title} (${song.length})`;
 
         li.addEventListener("click", async () => {
-            console.log("GET /songs/" + song.id);
-
             const fullSong = await getSongById(song.id);
 
-            songInfo.innerHTML = `
-                <h2>${fullSong.title}</h2>
-                <p>Längd: ${fullSong.length}</p>
-                <p>Inspelad: ${fullSong.recorded}</p>
-            `
-            ;
+            clearElement(songInfo);
+
+            const songTitle = document.createElement("h2");
+            songTitle.textContent = fullSong.title;
+
+            const length = createParagraph(`Längd: ${fullSong.length}`);
+            const recorded = createParagraph(`Inspelad: ${fullSong.recorded}`);
+
+            songInfo.append(songTitle, length, recorded);
         });
 
         list.appendChild(li);
